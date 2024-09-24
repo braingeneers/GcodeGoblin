@@ -103,10 +103,31 @@ def process_zip_file(zip_filename):
                 md5_file_name = original_file_name + '.md5'
                 fixed_zip.writestr(md5_file_name, md5_checksum)
 
+def process_gcode(filename):
+    with open('file.txt', 'r') as file:
+        lines = file.readlines()
+        new_content = process_lines(lines)
+        fixed_filename = filename.replace(".gcode", ".fixed.gcode")
+        with open(fixed_filename, 'w') as out_file:
+            for line in new_content:
+                out_file.write(line)
+
+def print_message():
+    print("Usage: python script.py <filename>")
+    print("       <filename> can be a .3mf file or a gcode file")
+    sys.exit(1)
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python script.py <zip_filename>")
-        sys.exit(1)
+        print_message()
     
-    zip_filename = sys.argv[1]
-    process_zip_file(zip_filename)
+    filename = sys.argv[1]
+    if filename.endswith(".3mf"):
+        process_zip_file(filename)
+    elif filename.endswith(".gcode"):
+        process_gcode(filename)
+    else:
+        print("ERROR: filename is neither .3mf nor .gcode")
+        print_message()
+
+
