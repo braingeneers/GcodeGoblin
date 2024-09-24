@@ -5,6 +5,9 @@
 
 GcodeGoblin is a small python script for post-processing G-Code. 
 
+For 3d printing, this allows for various hacks, like skipping entire layers (with ...CUT commands), or repeating layers with alternate
+settings (with ...COPY commands).
+
 It provides the following post-processing commands:
 
 - `; START_COPY: <buffer-name>`: Starts to copy the following lines into a named buffer
@@ -61,3 +64,19 @@ G5
 G2
 ; END OF PASTE BUFFER
 ```
+
+## Real world example
+
+In 3d printer slicer (Prusa, Orca, Bambu, maybe others), you can right click on the + on the top end of the Z-Axis slider to get a little menu that allows you to add custom G-Code, like the `; START_COPY: A` etc. This will be put into the G-Code that is generated next time you slice it. 
+
+![Example slicer menu from Bambu Studio](images/slicer-menu.png)
+
+The workflow is:
+
+1. Load Model
+1. Slice Model
+1. Insert G-Code with the right-click
+1. Slice Model again
+1. Export G-Code with `Export plate sliced file` or similar option
+1. Run `GcodeGoblin` on the generated file
+1. Print the generated file
