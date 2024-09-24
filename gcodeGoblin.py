@@ -104,13 +104,14 @@ def process_zip_file(zip_filename):
                 fixed_zip.writestr(md5_file_name, md5_checksum)
 
 def process_gcode(filename):
-    with open('file.txt', 'r') as file:
+    with open(filename, 'r') as file:
         lines = file.readlines()
         new_content = process_lines(lines)
         fixed_filename = filename.replace(".gcode", ".fixed.gcode")
         with open(fixed_filename, 'w') as out_file:
             for line in new_content:
                 out_file.write(line)
+                out_file.write("\n")
 
 def print_message():
     print("Usage: python script.py <filename>")
