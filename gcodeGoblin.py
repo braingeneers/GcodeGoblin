@@ -39,13 +39,13 @@ def process_lines(lines):
         if detect_command('; START_COPY:', line):
             # Extract the buffer name
             buffer_name = line.split(':')[1].strip()
-            print("Start copy {buffer_name}")
+            print(f"Start copy {buffer_name}")
             buffers[buffer_name] = []  # Initialize the buffer
             output.append(f'; starting to copy into buffer {buffer_name}')
             current_buffer = buffer_name
         elif detect_command('; STOP_COPY:', line):
             output.append(f'; stopping copy into buffer {current_buffer}')
-            print("Stop copy {buffer_name}")
+            print(f"Stop copy {buffer_name}")
             current_buffer = None  # Stop copying lines
         elif current_buffer:
             # Add line to the current buffer
@@ -53,7 +53,7 @@ def process_lines(lines):
         elif detect_command('; PASTE:', line):
             # Extract the buffer name to paste
             buffer_name = line.split(':')[1].strip()
-            print("paste buffer {current_buffer}")
+            print(f"paste buffer {buffer_name}")
             if buffer_name in buffers:
                 output.append(f'; pasting from buffer {buffer_name} into output:')
                 # Output all lines stored in the buffer
