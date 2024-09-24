@@ -33,6 +33,7 @@ G5
 ; PASTE: A
 ```
 
+running `python gcodegoblin.py example.gcode`
 should yield 
 
 ```gcode
