@@ -20,6 +20,7 @@ work.
 ## Example
 
 ```gcode
+# filename: example.gcode
 G1
 ; START_COPY: A
 G2
@@ -32,9 +33,10 @@ G5
 ; PASTE: A
 ```
 
-should yield somethin
+should yield 
 
 ```gcode
+# filename: example.fixed.gcode
 G1
 ; START_COPY: A
 ; starting to copy into buffer A
