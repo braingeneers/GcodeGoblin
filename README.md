@@ -1,12 +1,12 @@
-[![DOI](https://zenodo.org/badge/851838336.svg)](https://zenodo.org/doi/10.5281/zenodo.13835039)
+[![DOI](https://zenodo.org/badge/13835039.svg)](https://zenodo.org/doi/10.5281/zenodo.13835039)
 
 
 # GcodeGoblin
 
 GcodeGoblin is a small python script for post-processing G-Code. 
 
-For 3d printing, this allows for various hacks, like skipping entire layers (with ...CUT commands), or repeating layers with alternate
-settings (with ...COPY commands).
+For 3d printing, this allows for various hacks, like skipping entire layers (with `...CUT` commands), or repeating layers with alternate
+settings (with `...COPY` commands).
 
 It provides the following post-processing commands:
 
@@ -80,3 +80,5 @@ The workflow is:
 1. Export G-Code with `Export plate sliced file` or similar option
 1. Run `GcodeGoblin` on the generated file
 1. Print the generated file
+
+Generally, repeating a previous layer with a lower flow rate allows solid bonding of membranes.
