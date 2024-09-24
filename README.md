@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/851838336.svg)](https://zenodo.org/doi/10.5281/zenodo.13835039)
+
+
 # GcodeGoblin
 
 GcodeGoblin is a small python script for post-processing G-Code. 
