@@ -14,6 +14,8 @@ It provides the following post-processing commands:
 - `; PASTE: <buffer-name>`: Pastes the named buffer here
 - `; PRINT_BUFFER: <buffer-name>`: Prints the buffer content to stdout
 - `; REMOVE_EXTRUSION: <buffer-name>`: Removes extrusion from buffer
+- `; STOP_EXTRUDE:`: Removes extrusion from all following G1, G2, G3 commands
+- `; START_EXTRUDE:`: Leaves G1, G2, G3 commands alone
 - `; START_CUT`: Suppresses the following lines
 - `; STOP_CUT`: prints the following lines.
 

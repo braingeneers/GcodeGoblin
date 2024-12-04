@@ -34,13 +34,16 @@ def process_lines(lines):
     current_buffer = None
     output = []
     cutting = False
+    disable_extrusion = False
     lineno = 0
     for line in lines:
         lineno += 1
         line = line.strip()  # Remove leading/trailing whitespace
         if not cutting:
-            output.append(line)  # Collect output for testing
-
+            if disable_extrusion:
+                output.append(remove_extrusion(line))
+            else:
+                output.append(line)
         # Check for buffer commands with insensitivity
         if detect_command('; START_COPY:', line):
             # Extract the buffer name
@@ -51,8 +54,15 @@ def process_lines(lines):
             current_buffer = buffer_name
         elif detect_command('; STOP_COPY:', line):
             output.append(f'; stopping copy into buffer {current_buffer}')
+            buffer_name = line.split(':')[1].strip()
             print(f"Stop copy {buffer_name}")
             current_buffer = None  # Stop copying lines
+        elif detect_command('; STOP_EXTRUDE:', line):
+            print("Disabling extrusion")
+            disable_extrusion=True
+        elif detect_command('; START_EXTRUDE:', line):
+            print("Enabling extrusion")
+            disable_extrusion=False
         elif current_buffer:
             # Add line to the current buffer
             buffers[current_buffer].append(line)
@@ -66,7 +76,7 @@ def process_lines(lines):
                 for buffered_line in buffers[buffer_name]:
                     output.append(buffered_line)
                 output.append("; END OF PASTE BUFFER")
-        elif detect_command('; REMOVE_EXTRUSION', line):
+        elif detect_command('; REMOVE_EXTRUSION:', line):
             buffer_name = line.split(':')[1].strip()
             if buffer_name in buffers:
                 print(f'Removing extrusion activity from Buffer {buffer_name}')
