@@ -12,6 +12,8 @@ It provides the following post-processing commands:
 - `; START_COPY: <buffer-name>`: Starts to copy the following lines into a named buffer
 - `; STOP_COPY`: End of the copying
 - `; PASTE: <buffer-name>`: Pastes the named buffer here
+- `; PRINT_BUFFER: <buffer-name>`: Prints the buffer content to stdout
+- `; REMOVE_EXTRUSION: <buffer-name>`: Removes extrusion from buffer
 - `; START_CUT`: Suppresses the following lines
 - `; STOP_CUT`: prints the following lines.
 
@@ -63,6 +65,18 @@ G5
 G2
 ; END OF PASTE BUFFER
 ```
+
+## Remove Extrusion command
+
+The remove extrusion command changes the extrusion commands 
+into movement commands. It does that by looking for movement
+commands
+(`G1`, `G2`, `G3`) and removing removing any E1.23 components.
+
+This makes the hotend into a heat bonding device and allows the
+bonding of thin membranes that are flush to the top surface of 
+a 3d printed plastic piece. 
+
 
 ## Real world example
 

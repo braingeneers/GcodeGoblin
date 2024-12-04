@@ -2,6 +2,12 @@ import sys
 import zipfile
 import hashlib
 import os
+import re
+
+def remove_extrusion(line):
+    if line.startswith('G1 ') or line.startswith('G2 ') or line.startswith('G3 '):
+        return re.sub(r'\sE[0-9.-]+', '', line)
+    return line
 
 def extract_gcode_content(zip_filename):
     """Extracts lines from the first .gcode file found in the Metadata/ directory."""
@@ -60,6 +66,22 @@ def process_lines(lines):
                 for buffered_line in buffers[buffer_name]:
                     output.append(buffered_line)
                 output.append("; END OF PASTE BUFFER")
+        elif detect_command('; REMOVE_EXTRUSION', line):
+            buffer_name = line.split(':')[1].strip()
+            if buffer_name in buffers:
+                print(f'Removing extrusion activity from Buffer {buffer_name}')
+                newBuf = []
+                for buffered_line in buffers[buffer_name]:
+                    newBuf.append(remove_extrusion(buffered_line))
+                buffers[buffer_name] = newBuf
+        elif detect_command('; PRINT_BUFFER', line):
+            buffer_name = line.split(':')[1].strip()
+            if buffer_name in buffers:
+                print(f'; pasting from buffer {buffer_name} into output:')
+                # Output all lines stored in the buffer
+                for buffered_line in buffers[buffer_name]:
+                    print(buffered_line)
+                print(f"; END OF PASTE BUFFER {buffer_name}")
         elif detect_command('; START_CUT', line):
             output.append("; CUT START")
             print("Cut start")
