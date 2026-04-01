@@ -1,26 +1,12 @@
 import sys
-import zipfile
-import hashlib
-import os
 import re
+
+from bambuuzle.bambu_file import transform
 
 def remove_extrusion(line):
     if line.startswith('G1 ') or line.startswith('G2 ') or line.startswith('G3 '):
         return re.sub(r'\sE[0-9.-]+', '', line)
     return line
-
-def extract_gcode_content(zip_filename):
-    """Extracts lines from the first .gcode file found in the Metadata/ directory."""
-    content = None
-    original_file_name = None
-    with zipfile.ZipFile(zip_filename, 'r') as zip_file:
-        for file_info in zip_file.infolist():
-            if file_info.filename.startswith('Metadata/') and file_info.filename.endswith('.gcode'):
-                with zip_file.open(file_info.filename) as gcode_file:
-                    content = gcode_file.read().decode().splitlines()
-                original_file_name = file_info.filename
-                break
-    return content, original_file_name
 
 def detect_command(command, line):
     """Checks for command insensitivity."""
@@ -105,35 +91,16 @@ def process_lines(lines):
     
     return output
 
-def calculate_md5(file_content):
-    """Calculates the MD5 checksum of the given file content."""
-    md5 = hashlib.md5()
-    md5.update(file_content.encode('utf-8'))
-    return md5.hexdigest()
-
 def process_zip_file(zip_filename):
-    """Main function to process the .gcode file in the zip."""
-    lines, original_file_name = extract_gcode_content(zip_filename)
-    if lines is not None and original_file_name is not None:
-        new_content = process_lines(lines)
-        md5_checksum = calculate_md5('\n'.join(new_content))
-        
-        # Create a new zip file with .fixed.3mf extension
-        fixed_zip_filename = zip_filename.replace('.3mf', '.fixed.3mf')
-        
-        with zipfile.ZipFile(zip_filename, 'r') as original_zip:
-            with zipfile.ZipFile(fixed_zip_filename, 'w') as fixed_zip:
-                for file_info in original_zip.infolist():
-                    # Write all files except the original .gcode and .md5
-                    if file_info.filename != original_file_name and not file_info.filename.endswith('.md5'):
-                        fixed_zip.writestr(file_info, original_zip.read(file_info.filename))
-                
-                # Write the processed .gcode file
-                fixed_zip.writestr(original_file_name, '\n'.join(new_content).encode('utf-8'))
-                
-                # Write the new .md5 file
-                md5_file_name = original_file_name + '.md5'
-                fixed_zip.writestr(md5_file_name, md5_checksum)
+    """Process the .gcode inside a .3mf file using bambuuzle."""
+    fixed_zip_filename = zip_filename.replace('.3mf', '.fixed.3mf')
+
+    def goblin_transform(gcode):
+        lines = gcode.splitlines()
+        processed = process_lines(lines)
+        return '\n'.join(processed)
+
+    transform(zip_filename, fixed_zip_filename, goblin_transform)
 
 def process_gcode(filename):
     with open(filename, 'r') as file:
@@ -150,7 +117,7 @@ def print_message():
     print("       <filename> can be a .3mf file or a gcode file")
     sys.exit(1)
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
         print_message()
     
@@ -164,3 +131,5 @@ if __name__ == "__main__":
         print_message()
 
 
+if __name__ == "__main__":
+    main()

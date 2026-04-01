@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/gcodegoblin.svg)](https://badge.fury.io/py/gcodegoblin)
+[![Python 3.10+](https://img.shields.io/pypi/pyversions/gcodegoblin.svg)](https://pypi.org/project/gcodegoblin/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13835039.svg)](https://doi.org/10.5281/zenodo.13835039)
 
 # GcodeGoblin
