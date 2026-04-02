@@ -42,6 +42,10 @@ dev = [
     "ruff>=0.11",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+include = ["gcodeGoblin.py"]
+
 [tool.ruff]
 target-version = "py311"
 line-length = 88
