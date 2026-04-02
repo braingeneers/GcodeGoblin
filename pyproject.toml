@@ -1,40 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "gcodegoblin"
 version = "1.0.0"
 description = "Post-processing tool for G-code: copy/paste layers, cut sections, strip extrusion"
 authors = [
-    {name = "Reto Stamm", email = "reto@retostamm.com"}
+    {name = "Reto Stamm", email = "reto@retostamm.com"},
 ]
 readme = "README.md"
 license = "GPL-3.0-or-later"
+requires-python = ">=3.11"
 keywords = ["gcode", "3d-printing", "post-processing", "bambu", "orca-slicer", "3mf", "slicer", "layer-manipulation"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Manufacturing",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
     "Topic :: Multimedia :: Graphics :: Graphics Conversion",
 ]
-requires-python = ">=3.10"
 dependencies = [
     "bambuuzle>=0.1.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/retospect/GcodeGoblin"
-Repository = "https://github.com/retospect/GcodeGoblin"
-Issues = "https://github.com/retospect/GcodeGoblin/issues"
+Homepage = "https://github.com/braingeneers/GcodeGoblin"
+Repository = "https://github.com/braingeneers/GcodeGoblin"
+Issues = "https://github.com/braingeneers/GcodeGoblin/issues"
 
 [project.scripts]
 gcodegoblin = "gcodeGoblin:main"
 
-[build-system]
-requires = ["setuptools>=68.0"]
-build-backend = "setuptools.build_meta"
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.11",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
